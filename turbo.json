@@ -1,0 +1,81 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "ui": "stream",
+  "cacheDir": ".turbo",
+  "globalDependencies": [
+    "**/.env.*local",
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml"
+  ],
+  "globalEnv": [
+    "APP_TITLE",
+    "SERVER_URL",
+    "CLIENT_URL",
+    "DATABASE_URL",
+    "JWT_SECRET",
+    "REDIS_URL",
+    "NEXT_PUBLIC_APP_TITLE",
+    "NEXT_PUBLIC_SERVER_URL",
+    "NEXT_PUBLIC_CLIENT_URL"
+  ],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": [".next/**", "!.next/cache/**"]
+    },
+    "lint": {
+      "dependsOn": ["^lint"],
+      "cache": false
+    },
+    "check-types": {
+      "dependsOn": ["^check-types"],
+      "cache": false
+    },
+    "dev": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "env": ["*"],
+      "cache": false,
+      "persistent": true
+    },
+    "deploy": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "env": ["*"],
+      "cache": false
+    },
+    "start": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "env": ["*"],
+      "cache": false
+    },
+    "db:generate": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "env": ["*"],
+      "cache": false
+    },
+    "db:migrate": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "env": ["*"],
+      "cache": false,
+      "persistent": true
+    },
+    "db:reset": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "env": ["*"],
+      "cache": false,
+      "persistent": true
+    },
+    "db:deploy": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "env": ["*"],
+      "cache": false
+    }
+  }
+}

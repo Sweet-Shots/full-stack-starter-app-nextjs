@@ -1,0 +1,45 @@
+version: "4.0"
+
+networks:
+  test-network:
+    driver: bridge
+
+services:
+  test-redis:
+    image: redis:7
+    container_name: test-redis
+    networks:
+      - test-network
+
+  test-db:
+    image: postgres:15
+    container_name: test-db
+    restart: always
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: this-is-my-password-xjectro
+      POSTGRES_DB: test
+    ports:
+      - "5432:5432"
+    networks:
+      - test-network
+
+  test-oto:
+    container_name: development
+    depends_on:
+      - test-db
+      - test-redis
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+      - "5000:5000"
+    env_file:
+      - .env.dev
+    networks:
+      - test-network
+    command: sh -c "
+      until pg_isready -h test-db -p 5432; do echo 'waiting for postgres...'; sleep 1; done && \
+      pnpm db:reset && pnpm db:migrate && pnpm db:generate && \
+      pnpm run build && pnpm run start"

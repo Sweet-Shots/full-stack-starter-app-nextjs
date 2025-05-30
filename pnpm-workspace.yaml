@@ -1,0 +1,10 @@
+packages:
+  - apps/*
+  - packages/*
+ignoredBuiltDependencies:
+  - '@tailwindcss/oxide'
+  - cpu-features
+  - esbuild
+  - sharp
+  - ssh2
+nodeLinker: hoisted
